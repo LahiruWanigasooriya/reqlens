@@ -1,14 +1,15 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.api.auth import router as auth_router
+from app.api.projects import router as projects_router
 from app.core.config import settings
 from app.core.database import check_database_connection
 
 
-
 app = FastAPI(
     title=settings.APP_NAME,
-    version="0.1.0",
+    version="0.2.0",
     description="ReqLens API",
 )
 
@@ -22,11 +23,22 @@ app.add_middleware(
 )
 
 
+app.include_router(
+    auth_router,
+    prefix=settings.API_V1_PREFIX,
+)
+
+app.include_router(
+    projects_router,
+    prefix=settings.API_V1_PREFIX,
+)
+
+
 @app.get("/")
 def root():
     return {
         "name": "ReqLens API",
-        "version": "0.1.0",
+        "version": "0.2.0",
         "status": "running",
     }
 

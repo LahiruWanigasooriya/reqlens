@@ -1,0 +1,16 @@
+SQLAlchemy → ORM
+Alembic    → database migrations
+Argon2     → password hashing
+JWT        → authentication tokens
+Pydantic   → request/response validation
+
+
+# How to run in windows
+backend\env\Scripts\activate
+uvicorn app.main:app --reload
+
+# Frontend
+npm run dev
+
+# Powershell issue bypass
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
