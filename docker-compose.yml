@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: reqlens-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: reqlens
+      POSTGRES_PASSWORD: reqlens
+      POSTGRES_DB: reqlens
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - reqlens_postgres_data:/var/lib/postgresql/data
+
+volumes:
+  reqlens_postgres_data:
