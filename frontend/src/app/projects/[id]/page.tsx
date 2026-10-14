@@ -4,11 +4,13 @@ import { Suspense, use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import FileUpload from "@/components/project/FileUpload";
 import ProjectFiles from "@/components/project/ProjectFiles";
+import RequirementsList from "@/components/project/RequirementsList";
 
 import { apiRequest } from "@/lib/api";
 import type {
   Project,
   ProjectFile,
+  Requirement,
 } from "@/types";
 
 function ProjectContent({
@@ -16,13 +18,13 @@ function ProjectContent({
 }: {
   params: Promise<{ id: string }>;
 }) {
-
   const { id } = use(params);
 
   const router = useRouter();
 
   const [project, setProject] = useState<Project | null>(null);
   const [files, setFiles] = useState<ProjectFile[]>([]);
+  const [requirements, setRequirements] = useState<Requirement[]>([]);
 
   async function loadFiles() {
     const token = localStorage.getItem("reqlens_access_token");
@@ -47,6 +49,29 @@ function ProjectContent({
     }
   }
 
+  async function loadRequirements() {
+    const token = localStorage.getItem("reqlens_access_token");
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const data = await apiRequest<Requirement[]>(
+        `/api/v1/projects/${id}/requirements`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setRequirements(data);
+    } catch {
+      setRequirements([]);
+    }
+  }
+
   useEffect(() => {
     async function loadProject() {
       const token = localStorage.getItem("reqlens_access_token");
@@ -65,6 +90,7 @@ function ProjectContent({
 
         setProject(data);
         await loadFiles();
+        await loadRequirements();
       } catch {
         router.push("/dashboard");
       }
@@ -121,7 +147,21 @@ function ProjectContent({
 
         <FileUpload projectId={id} onUploaded={loadFiles} />
 
-        <ProjectFiles files={files} />
+        <ProjectFiles
+          projectId={id}
+          files={files}
+          onRequirementsExtracted={loadRequirements}
+        />
+      </section>
+
+      <section className="border p-5 space-y-5">
+        <div>
+          <h2 className="text-xl font-semibold">Requirements</h2>
+
+          <p>{requirements.length} requirements extracted</p>
+        </div>
+
+        <RequirementsList requirements={requirements} />
       </section>
 
       <section className="border p-5">

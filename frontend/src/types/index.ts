@@ -31,3 +31,23 @@ export type ProjectFile = {
   processing_error: string | null;
   created_at: string;
 };
+
+export type VerifiableCriterion = {
+  id: string;
+  criterion_number: number;
+  description: string;
+  expected_behavior: string | null;
+  constraint_text: string | null;
+};
+
+
+export type Requirement = {
+  id: string;
+  external_id: string;
+  title: string;
+  description: string;
+  requirement_type: string;
+  source_text: string | null;
+  created_at: string;
+  criteria: VerifiableCriterion[];
+};

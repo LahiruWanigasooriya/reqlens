@@ -6,6 +6,9 @@ from app.api.projects import router as projects_router
 from app.core.config import settings
 from app.core.database import check_database_connection
 from app.api.files import router as files_router
+from app.api.requirements import (
+    router as requirements_router,
+)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -37,6 +40,12 @@ app.include_router(
     files_router,
     prefix=settings.API_V1_PREFIX,
 )
+
+app.include_router(
+    requirements_router,
+    prefix=settings.API_V1_PREFIX,
+)
+
 
 
 
