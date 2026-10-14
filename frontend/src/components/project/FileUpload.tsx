@@ -90,7 +90,7 @@ export default function FileUpload({
 
       <input
         type="file"
-        accept=".pdf,.docx,.txt,.md,.csv,.json,.yaml,.yml"
+        accept=".pdf,.docx,.txt,.md,.csv,.json,.yaml,.yml,.py,.js,.jsx,.ts,.tsx,.java,.cs,.go,.php,.rb,.c,.cpp,.h,.sql"
         onChange={(event) =>
           setFile(
             event.target.files?.[0] ??

@@ -1,6 +1,6 @@
 "use client";
 
-import { use, useEffect, useState } from "react";
+import { Suspense, use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import FileUpload from "@/components/project/FileUpload";
 import ProjectFiles from "@/components/project/ProjectFiles";
@@ -11,11 +11,12 @@ import type {
   ProjectFile,
 } from "@/types";
 
-export default function ProjectPage({
+function ProjectContent({
   params,
 }: {
   params: Promise<{ id: string }>;
 }) {
+
   const { id } = use(params);
 
   const router = useRouter();
@@ -131,4 +132,17 @@ export default function ProjectPage({
     </main>
   );
 }
+
+export default function ProjectPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  return (
+    <Suspense fallback={<main className="p-8">Loading project...</main>}>
+      <ProjectContent params={params} />
+    </Suspense>
+  );
+}
+
 

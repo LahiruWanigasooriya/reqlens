@@ -16,8 +16,22 @@ SUPPORTED_EXTENSIONS = {
     ".json",
     ".yaml",
     ".yml",
-}
 
+    ".py",
+    ".js",
+    ".jsx",
+    ".ts",
+    ".tsx",
+    ".java",
+    ".cs",
+    ".go",
+    ".php",
+    ".rb",
+    ".c",
+    ".cpp",
+    ".h",
+    ".sql",
+}
 
 def extract_text(file_path: Path) -> str:
     extension = file_path.suffix.lower()
@@ -28,8 +42,26 @@ def extract_text(file_path: Path) -> str:
     if extension == ".docx":
         return extract_docx(file_path)
 
-    if extension in {".txt", ".md"}:
+    if extension in {
+        ".txt",
+        ".md",
+        ".py",
+        ".js",
+        ".jsx",
+        ".ts",
+        ".tsx",
+        ".java",
+        ".cs",
+        ".go",
+        ".php",
+        ".rb",
+        ".c",
+        ".cpp",
+        ".h",
+        ".sql",
+    }:
         return extract_plain_text(file_path)
+
 
     if extension == ".csv":
         return extract_csv(file_path)

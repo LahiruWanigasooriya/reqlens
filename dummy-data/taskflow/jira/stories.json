@@ -1,0 +1,74 @@
+{
+  "project": "TASK",
+  "name": "TaskFlow",
+  "issues": [
+    {
+      "key": "TASK-101",
+      "type": "Story",
+      "status": "Done",
+      "title": "User registration",
+      "requirement_id": "REQ-001",
+      "acceptance_criteria": [
+        "User can register with full name, email and password",
+        "Duplicate email addresses are rejected",
+        "Password must contain at least 8 characters"
+      ]
+    },
+    {
+      "key": "TASK-102",
+      "type": "Story",
+      "status": "Done",
+      "title": "User login",
+      "requirement_id": "REQ-002",
+      "acceptance_criteria": [
+        "Registered users can login",
+        "Invalid credentials are rejected"
+      ]
+    },
+    {
+      "key": "TASK-103",
+      "type": "Story",
+      "status": "Done",
+      "title": "Password reset",
+      "requirement_id": "REQ-003",
+      "acceptance_criteria": [
+        "User can request password reset",
+        "Reset email is sent",
+        "Reset token expires after 15 minutes"
+      ]
+    },
+    {
+      "key": "TASK-104",
+      "type": "Story",
+      "status": "Done",
+      "title": "Create tasks",
+      "requirement_id": "REQ-004",
+      "acceptance_criteria": [
+        "Authenticated user can create tasks",
+        "Task contains title, description, due date and priority",
+        "Priority supports LOW, MEDIUM and HIGH"
+      ]
+    },
+    {
+      "key": "TASK-105",
+      "type": "Story",
+      "status": "Done",
+      "title": "Delete tasks",
+      "requirement_id": "REQ-005",
+      "acceptance_criteria": [
+        "User can delete own task",
+        "User cannot delete another user's task"
+      ]
+    },
+    {
+      "key": "TASK-106",
+      "type": "Story",
+      "status": "To Do",
+      "title": "Task search",
+      "requirement_id": "REQ-006",
+      "acceptance_criteria": [
+        "User can search tasks by title"
+      ]
+    }
+  ]
+}
