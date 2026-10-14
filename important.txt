@@ -9,6 +9,10 @@ Pydantic   → request/response validation
 backend\env\Scripts\activate
 uvicorn app.main:app --reload
 
+cd backend
+.\.venv\Scripts\Activate.ps1
+
+
 # Frontend
 npm run dev
 

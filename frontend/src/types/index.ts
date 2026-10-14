@@ -19,3 +19,15 @@ export type LoginResponse = {
   access_token: string;
   token_type: string;
 };
+
+export type ProjectFile = {
+  id: string;
+  project_id: string;
+  original_name: string;
+  file_type: string;
+  mime_type: string | null;
+  size_bytes: number;
+  processing_status: string;
+  processing_error: string | null;
+  created_at: string;
+};

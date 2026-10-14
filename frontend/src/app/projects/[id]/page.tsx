@@ -2,9 +2,14 @@
 
 import { use, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import FileUpload from "@/components/project/FileUpload";
+import ProjectFiles from "@/components/project/ProjectFiles";
 
-import { apiRequest } from "@/src/lib/api";
-import type { Project } from "@/src/types";
+import { apiRequest } from "@/lib/api";
+import type {
+  Project,
+  ProjectFile,
+} from "@/types";
 
 export default function ProjectPage({
   params,
@@ -16,6 +21,30 @@ export default function ProjectPage({
   const router = useRouter();
 
   const [project, setProject] = useState<Project | null>(null);
+  const [files, setFiles] = useState<ProjectFile[]>([]);
+
+  async function loadFiles() {
+    const token = localStorage.getItem("reqlens_access_token");
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const data = await apiRequest<ProjectFile[]>(
+        `/api/v1/projects/${id}/files`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setFiles(data);
+    } catch {
+      setFiles([]);
+    }
+  }
 
   useEffect(() => {
     async function loadProject() {
@@ -34,6 +63,7 @@ export default function ProjectPage({
         });
 
         setProject(data);
+        await loadFiles();
       } catch {
         router.push("/dashboard");
       }
@@ -74,8 +104,23 @@ export default function ProjectPage({
         <div className="border p-5">
           <h2 className="font-semibold">Uploaded Files</h2>
 
-          <p>0 files</p>
+          <p>{files.length} files</p>
         </div>
+      </section>
+
+      <section className="border p-5 space-y-5">
+        <div>
+          <h2 className="text-xl font-semibold">Project Evidence</h2>
+
+          <p>
+            Upload requirements, specifications, test reports, documentation or
+            other project evidence.
+          </p>
+        </div>
+
+        <FileUpload projectId={id} onUploaded={loadFiles} />
+
+        <ProjectFiles files={files} />
       </section>
 
       <section className="border p-5">
@@ -86,3 +131,4 @@ export default function ProjectPage({
     </main>
   );
 }
+

@@ -1,4 +1,9 @@
 from app.models.user import User
 from app.models.project import Project
+from app.models.project_file import ProjectFile
 
-__all__ = ["User", "Project"]
+__all__ = [
+    "User",
+    "Project",
+    "ProjectFile",
+]

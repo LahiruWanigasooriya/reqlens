@@ -26,3 +26,6 @@ Thumbs.db
 
 # Logs
 *.log
+
+# ReqLens uploaded project data
+backend/storage/uploads/
