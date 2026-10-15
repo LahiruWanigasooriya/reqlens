@@ -29,3 +29,4 @@ Thumbs.db
 
 # ReqLens uploaded project data
 backend/storage/uploads/
+backend/storage/chroma/

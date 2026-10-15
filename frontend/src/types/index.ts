@@ -69,4 +69,15 @@ export type UserStory = {
   requirement_id: string | null;
   requirement_external_id: string | null;
   acceptance_criteria: AcceptanceCriterion[];
-};
+};
+
+
+export type KnowledgeResult = {
+  vector_id: string;
+  score: number;
+  content: string;
+  source_name: string;
+  evidence_type: string;
+  project_file_id: string;
+  chunk_index: number;
+};

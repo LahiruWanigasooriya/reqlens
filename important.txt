@@ -4,6 +4,10 @@ Argon2     → password hashing
 JWT        → authentication tokens
 Pydantic   → request/response validation
 
+Each ReqLens project gets its own vector collection.
+That prevents evidence from: Project A
+being accidentally retrieved for: Project B
+
 
 # How to run in windows
 backend\env\Scripts\activate

@@ -20,6 +20,15 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str
     GEMINI_MODEL: str = "gemini-2.5-flash"
 
+    CHROMA_DIR: str = "storage/chroma"
+    EMBEDDING_MODEL: str = "gemini-embedding-001"
+    EMBEDDING_DIMENSIONS: int = 768
+
+    KNOWLEDGE_CHUNK_SIZE: int = 800
+    KNOWLEDGE_CHUNK_OVERLAP: int = 120
+
+    RETRIEVAL_TOP_K: int = 8
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

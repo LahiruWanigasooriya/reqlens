@@ -12,6 +12,9 @@ from app.api.requirements import (
 from app.api.stories import (
     router as stories_router,
 )
+from app.api.knowledge import (
+    router as knowledge_router,
+)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -33,9 +36,13 @@ app.include_router(
     auth_router,
     prefix=settings.API_V1_PREFIX,
 )
-
 app.include_router(
     projects_router,
+    prefix=settings.API_V1_PREFIX,
+)
+
+app.include_router(
+    knowledge_router,
     prefix=settings.API_V1_PREFIX,
 )
 

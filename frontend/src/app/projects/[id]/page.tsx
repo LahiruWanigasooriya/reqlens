@@ -6,6 +6,7 @@ import FileUpload from "@/components/project/FileUpload";
 import ProjectFiles from "@/components/project/ProjectFiles";
 import RequirementsList from "@/components/project/RequirementsList";
 import StoriesList from "@/components/project/StoriesList";
+import ProjectKnowledge from "@/components/project/ProjectKnowledge";
 
 import { apiRequest } from "@/lib/api";
 import type {
@@ -201,6 +202,8 @@ function ProjectContent({
 
         <StoriesList stories={stories} />
       </section>
+
+      <ProjectKnowledge projectId={id} />
 
       <section className="border p-5">
         <h2 className="text-xl font-semibold">Analysis</h2>

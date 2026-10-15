@@ -5,6 +5,7 @@ from app.models.requirement import Requirement
 from app.models.verifiable_criterion import VerifiableCriterion
 from app.models.user_story import UserStory
 from app.models.acceptance_criterion import AcceptanceCriterion
+from app.models.knowledge_chunk import KnowledgeChunk
 
 __all__ = [
     "User",
@@ -14,4 +15,5 @@ __all__ = [
     "VerifiableCriterion",
     "UserStory",
     "AcceptanceCriterion",
+    "KnowledgeChunk",
 ]
