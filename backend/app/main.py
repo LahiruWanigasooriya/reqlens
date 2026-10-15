@@ -9,6 +9,9 @@ from app.api.files import router as files_router
 from app.api.requirements import (
     router as requirements_router,
 )
+from app.api.stories import (
+    router as stories_router,
+)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -46,6 +49,10 @@ app.include_router(
     prefix=settings.API_V1_PREFIX,
 )
 
+app.include_router(
+    stories_router,
+    prefix=settings.API_V1_PREFIX,
+)
 
 
 

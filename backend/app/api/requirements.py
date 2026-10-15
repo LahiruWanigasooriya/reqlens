@@ -22,6 +22,7 @@ from app.services.project_access import (
 from app.services.requirement_extraction import (
     extract_requirements_from_file,
 )
+from app.models.user_story import UserStory
 
 
 router = APIRouter(
@@ -173,3 +174,92 @@ def list_requirements(
         )
 
     return result
+
+
+@router.get(
+    "/{project_id}/traceability-summary"
+)
+def traceability_summary(
+    project_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(
+        get_current_user
+    ),
+):
+
+    get_owned_project(
+        db,
+        current_user,
+        project_id,
+    )
+
+    requirements = db.scalars(
+        select(Requirement).where(
+            Requirement.project_id
+            == project_id
+        )
+    ).all()
+
+    results = []
+
+    linked = 0
+
+    for requirement in requirements:
+
+        stories = db.scalars(
+            select(UserStory).where(
+                UserStory.project_id
+                == project_id,
+
+                UserStory.requirement_id
+                == requirement.id,
+            )
+        ).all()
+
+        has_story = len(stories) > 0
+
+        if has_story:
+            linked += 1
+
+        results.append(
+            {
+                "requirement":
+                    requirement.external_id,
+
+                "has_story":
+                    has_story,
+
+                "stories": [
+                    story.external_id
+                    for story in stories
+                ],
+            }
+        )
+
+    total = len(requirements)
+
+    coverage = (
+        round(
+            linked / total * 100,
+            2,
+        )
+        if total
+        else 0
+    )
+
+    return {
+        "total_requirements":
+            total,
+
+        "requirements_with_story":
+            linked,
+
+        "requirements_without_story":
+            total - linked,
+
+        "story_traceability_coverage":
+            coverage,
+
+        "requirements":
+            results,
+    }

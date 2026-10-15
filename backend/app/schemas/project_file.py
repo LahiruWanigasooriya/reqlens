@@ -11,6 +11,7 @@ class ProjectFileResponse(BaseModel):
     original_name: str
     file_type: str
     mime_type: str | None
+    evidence_type: str
 
     size_bytes: int
 

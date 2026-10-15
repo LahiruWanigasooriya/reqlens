@@ -7,6 +7,7 @@ type Props = {
   projectId: string;
   files: ProjectFile[];
   onRequirementsExtracted: () => void;
+  onStoriesImported: () => void;
 };
 
 function formatBytes(bytes: number) {
@@ -25,6 +26,7 @@ export default function ProjectFiles({
   projectId,
   files,
   onRequirementsExtracted,
+  onStoriesImported,
 }: Props) {
   async function extractRequirements(fileId: string) {
     const token = localStorage.getItem("reqlens_access_token");
@@ -53,6 +55,32 @@ export default function ProjectFiles({
     }
   }
 
+  async function importStories(fileId: string) {
+    const token = localStorage.getItem("reqlens_access_token");
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      await apiRequest(
+        `/api/v1/projects/${projectId}/files/${fileId}/import-stories`,
+        {
+          method: "POST",
+
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      onStoriesImported();
+      alert("Stories imported successfully.");
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "Story import failed");
+    }
+  }
+
   if (files.length === 0) {
     return <p>No project files uploaded.</p>;
   }
@@ -65,6 +93,8 @@ export default function ProjectFiles({
 
           <p className="text-sm">Type: {file.file_type}</p>
 
+          <p className="text-sm">Evidence: {file.evidence_type}</p>
+
           <p className="text-sm">Size: {formatBytes(file.size_bytes)}</p>
 
           <p className="text-sm">Status: {file.processing_status}</p>
@@ -73,12 +103,23 @@ export default function ProjectFiles({
             <p className="text-red-600">{file.processing_error}</p>
           )}
 
-          <button
-            onClick={() => extractRequirements(file.id)}
-            className="border px-3 py-1 mt-2"
-          >
-            Extract Requirements
-          </button>
+          {file.evidence_type === "requirement" && (
+            <button
+              onClick={() => extractRequirements(file.id)}
+              className="border px-3 py-1 mt-2"
+            >
+              Extract Requirements
+            </button>
+          )}
+
+          {file.evidence_type === "story" && (
+            <button
+              onClick={() => importStories(file.id)}
+              className="border px-3 py-1 mt-2"
+            >
+              Import Stories
+            </button>
+          )}
         </div>
       ))}
     </div>

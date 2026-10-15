@@ -23,6 +23,8 @@ from app.services.file_parser import (
 )
 from app.services.file_storage import save_upload
 from app.services.project_access import get_owned_project
+from app.services.evidence_classifier import classify_file
+from app.services.evidence_classifier import classify_file
 
 
 router = APIRouter(
@@ -88,6 +90,11 @@ async def upload_project_file(
         mime_type=file.content_type,
         size_bytes=size,
         storage_path=str(path),
+
+        evidence_type=classify_file(
+            file.filename,
+        ),
+
         processing_status="processing",
     )
 
@@ -213,3 +220,53 @@ def delete_project_file(
     db.commit()
 
     return None
+
+
+@router.post(
+    "/{project_id}/files/reclassify"
+)
+def reclassify_project_files(
+    project_id: uuid.UUID,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    get_owned_project(
+        db,
+        current_user,
+        project_id,
+    )
+
+    files = db.scalars(
+        select(ProjectFile).where(
+            ProjectFile.project_id
+            == project_id
+        )
+    ).all()
+
+    results = []
+
+    for project_file in files:
+
+        project_file.evidence_type = (
+            classify_file(
+                project_file.original_name,
+                project_file.extracted_text,
+            )
+        )
+
+        results.append(
+            {
+                "file":
+                    project_file.original_name,
+
+                "evidence_type":
+                    project_file.evidence_type,
+            }
+        )
+
+    db.commit()
+
+    return {
+        "classified": len(results),
+        "files": results,
+    }

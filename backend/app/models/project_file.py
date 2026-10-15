@@ -79,3 +79,10 @@ class ProjectFile(Base):
         "Project",
         back_populates="files",
     )
+
+    evidence_type: Mapped[str] = mapped_column(
+        String(50),
+        default="other",
+        nullable=False,
+        index=True,
+    )

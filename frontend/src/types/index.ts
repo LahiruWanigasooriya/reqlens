@@ -26,6 +26,7 @@ export type ProjectFile = {
   original_name: string;
   file_type: string;
   mime_type: string | null;
+  evidence_type: string;
   size_bytes: number;
   processing_status: string;
   processing_error: string | null;
@@ -51,3 +52,21 @@ export type Requirement = {
   created_at: string;
   criteria: VerifiableCriterion[];
 };
+
+export type AcceptanceCriterion = {
+  id: string;
+  criterion_number: number;
+  description: string;
+};
+
+export type UserStory = {
+  id: string;
+  external_id: string;
+  title: string;
+  description: string | null;
+  issue_type: string;
+  status: string;
+  requirement_id: string | null;
+  requirement_external_id: string | null;
+  acceptance_criteria: AcceptanceCriterion[];
+};

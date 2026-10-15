@@ -5,12 +5,14 @@ import { useRouter } from "next/navigation";
 import FileUpload from "@/components/project/FileUpload";
 import ProjectFiles from "@/components/project/ProjectFiles";
 import RequirementsList from "@/components/project/RequirementsList";
+import StoriesList from "@/components/project/StoriesList";
 
 import { apiRequest } from "@/lib/api";
 import type {
   Project,
   ProjectFile,
   Requirement,
+  UserStory,
 } from "@/types";
 
 function ProjectContent({
@@ -25,6 +27,7 @@ function ProjectContent({
   const [project, setProject] = useState<Project | null>(null);
   const [files, setFiles] = useState<ProjectFile[]>([]);
   const [requirements, setRequirements] = useState<Requirement[]>([]);
+  const [stories, setStories] = useState<UserStory[]>([]);
 
   async function loadFiles() {
     const token = localStorage.getItem("reqlens_access_token");
@@ -72,6 +75,29 @@ function ProjectContent({
     }
   }
 
+  async function loadStories() {
+    const token = localStorage.getItem("reqlens_access_token");
+
+    if (!token) {
+      return;
+    }
+
+    try {
+      const data = await apiRequest<UserStory[]>(
+        `/api/v1/projects/${id}/stories`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setStories(data);
+    } catch {
+      setStories([]);
+    }
+  }
+
   useEffect(() => {
     async function loadProject() {
       const token = localStorage.getItem("reqlens_access_token");
@@ -91,6 +117,7 @@ function ProjectContent({
         setProject(data);
         await loadFiles();
         await loadRequirements();
+        await loadStories();
       } catch {
         router.push("/dashboard");
       }
@@ -151,6 +178,7 @@ function ProjectContent({
           projectId={id}
           files={files}
           onRequirementsExtracted={loadRequirements}
+          onStoriesImported={loadStories}
         />
       </section>
 
@@ -162,6 +190,16 @@ function ProjectContent({
         </div>
 
         <RequirementsList requirements={requirements} />
+      </section>
+
+      <section className="border p-5 space-y-5">
+        <div>
+          <h2 className="text-xl font-semibold">User Stories</h2>
+
+          <p>{stories.length} stories imported</p>
+        </div>
+
+        <StoriesList stories={stories} />
       </section>
 
       <section className="border p-5">
