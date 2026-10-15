@@ -190,7 +190,10 @@ function ProjectContent({
           <p>{requirements.length} requirements extracted</p>
         </div>
 
-        <RequirementsList requirements={requirements} />
+        <RequirementsList
+          projectId={id}
+          requirements={requirements}
+        />
       </section>
 
       <section className="border p-5 space-y-5">

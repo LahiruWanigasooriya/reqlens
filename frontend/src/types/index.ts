@@ -81,3 +81,31 @@ export type KnowledgeResult = {
   project_file_id: string;
   chunk_index: number;
 };
+
+
+export type EvidenceItem = {
+  id: string;
+  source_name: string;
+  evidence_type: string;
+  strength: string;
+  supports_criterion: boolean;
+  relevance_score: number;
+  semantic_score: number;
+  extracted_fact: string | null;
+  explanation: string;
+  content: string;
+};
+
+
+export type CriterionEvidence = {
+  criterion_id: string;
+  criterion_number: number;
+  criterion: string;
+  evidence: EvidenceItem[];
+};
+
+
+export type RequirementEvidence = {
+  requirement: string;
+  criteria: CriterionEvidence[];
+};

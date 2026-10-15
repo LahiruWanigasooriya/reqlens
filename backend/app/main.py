@@ -15,6 +15,9 @@ from app.api.stories import (
 from app.api.knowledge import (
     router as knowledge_router,
 )
+from app.api.evidence import (
+    router as evidence_router,
+)
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -43,6 +46,11 @@ app.include_router(
 
 app.include_router(
     knowledge_router,
+    prefix=settings.API_V1_PREFIX,
+)
+
+app.include_router(
+    evidence_router,
     prefix=settings.API_V1_PREFIX,
 )
 

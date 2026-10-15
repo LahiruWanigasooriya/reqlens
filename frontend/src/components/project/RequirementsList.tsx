@@ -1,16 +1,19 @@
 "use client";
 
+import EvidencePanel from "@/components/project/EvidencePanel";
 import type {
   Requirement,
 } from "@/types";
 
 
 type Props = {
+  projectId: string;
   requirements: Requirement[];
 };
 
 
 export default function RequirementsList({
+  projectId,
   requirements,
 }: Props) {
 
@@ -95,6 +98,11 @@ export default function RequirementsList({
 
             </div>
 
+            <EvidencePanel
+              projectId={projectId}
+              requirement={requirement}
+            />
+
           </div>
 
         )
@@ -102,4 +110,4 @@ export default function RequirementsList({
 
     </div>
   );
-}
+}

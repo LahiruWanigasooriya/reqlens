@@ -36,11 +36,20 @@ def retrieve_project_evidence(
         embed_model=embed_model,
     )
 
+    requested_top_k = (
+        top_k
+        or settings.RETRIEVAL_TOP_K
+    )
+
+    retrieval_top_k = (
+        requested_top_k * 4
+        if evidence_types
+        else requested_top_k
+    )
+
     retriever = index.as_retriever(
-        similarity_top_k=(
-            top_k
-            or settings.RETRIEVAL_TOP_K
-        )
+        similarity_top_k=
+            retrieval_top_k
     )
 
     nodes = retriever.retrieve(
@@ -104,4 +113,4 @@ def retrieve_project_evidence(
             }
         )
 
-    return results
+    return results[:requested_top_k]
